@@ -60,6 +60,8 @@
   /* Dir summary panel */
   #dir-summary { background: #2a2a2a; border: 0.5px solid #444; border-radius: 8px; padding: 0.5rem 1rem; margin-bottom: 10px; }
   #dir-summary table { width: 100%; border-collapse: collapse; }
+  #dir-summary thead th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #41b6e6; font-weight: 600; padding: 2px 0 6px; border-bottom: 0.5px solid #444; }
+  #dir-summary thead th + th { padding-left: 14px; }
   #dir-summary td { padding: 6px 0; border-bottom: 0.5px solid #333; vertical-align: middle; }
   #dir-summary tr:last-child td { border-bottom: none; }
   #dir-summary td + td { padding-left: 14px; }
@@ -74,9 +76,9 @@
   .td-frame { font-family: monospace; font-size: 13px; font-weight: 700; color: #db3eb1; white-space: nowrap; width: 1%; }
   .td-count { font-family: monospace; font-size: 14px; font-weight: 700; color: #db3eb1; white-space: nowrap; width: 1%; text-align: center; }
   .td-count-label { font-size: 10px; color: #888; font-weight: 400; display: block; text-align: center; }
-  .dir-row { font-family: monospace; font-size: 14px; color: #fff; margin-bottom: 4px; }
+  .dir-row { display: grid; grid-template-columns: max-content 1fr auto; align-items: center; gap: 0 14px; font-family: monospace; margin-bottom: 4px; }
   .dir-row:last-child { margin-bottom: 0; }
-  .dir-row .leaf { font-weight: 600; color: #41b6e6; font-size: 13px; }
+  .dir-row .leaf { font-weight: 600; color: #41b6e6; font-size: 13px; white-space: nowrap; }
   .dir-row .full { font-size: 12px; color: #888; word-break: break-all; }
 
   .ok-wrap { text-align: center; padding: 4rem 0; }
@@ -363,12 +365,15 @@ function renderResults(dupeGroups) {
 
   // Dir summary — unique directory names at the top of the section
   const allUniqueDirs = [...new Set(dupeGroups.flatMap(g => g.entries.map(f => f.path)))];
-  document.getElementById('dir-summary').innerHTML = `<table>${allUniqueDirs.map(d => `
-    <tr>
-      <td><span class="dir-sum-name">${leafName(d)}</span></td>
-      <td><span class="dir-sum-path">${d}</span></td>
-      <td style="white-space:nowrap;"><button class="copy-btn" onclick="copyPath(this,'${safePath(d)}')">copy path</button></td>
-    </tr>`).join('')}</table>`;
+  document.getElementById('dir-summary').innerHTML = `<table>
+    <thead><tr><th>Directory</th><th>Full Path</th><th></th></tr></thead>
+    <tbody>${allUniqueDirs.map(d => `
+      <tr>
+        <td><span class="dir-sum-name">${leafName(d)}</span></td>
+        <td><span class="dir-sum-path">${d}</span></td>
+        <td style="white-space:nowrap;"><button class="copy-btn" onclick="copyPath(this,'${safePath(d)}')">copy path</button></td>
+      </tr>`).join('')}
+    </tbody></table>`;
 
   // Directory report — same collapsing logic as top section
   dirReportEl.innerHTML = `<table class="dir-table">
@@ -386,8 +391,9 @@ function renderResults(dupeGroups) {
           : `${first.entries.length}<span class="td-count-label">files</span>`;
         const dirRows = uniqueDirs.map(dir => `
           <div class="dir-row">
-            <span class="leaf">${leafName(dir)} <button class="copy-btn" onclick="copyPath(this,'${safePath(dir)}')">copy path</button></span>
+            <span class="leaf">${leafName(dir)}</span>
             <div class="full">${dir}</div>
+            <button class="copy-btn" onclick="copyPath(this,'${safePath(dir)}')">copy path</button>
           </div>`).join('');
         return `<tr>
           <td class="td-frame">${frameLabel}</td>
