@@ -57,6 +57,9 @@
   .range-dir-label { font-size: 13px; color: #41b6e6; font-weight: 600; font-family: monospace; margin-bottom: 3px; }
   .range-dir-full { font-size: 12px; color: #888; font-family: monospace; word-break: break-all; }
 
+  /* Dir summary panel */
+  #dir-summary { background: #2a2a2a; border: 0.5px solid #444; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 10px; font-family: monospace; font-size: 13px; color: #41b6e6; line-height: 1.8; word-break: break-word; }
+
   /* Directory report table */
   .dir-table { width: 100%; border-collapse: collapse; background: #2a2a2a; border-radius: 8px; overflow: hidden; border: 0.5px solid #444; }
   .dir-table th { text-align: left; padding: 8px 14px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #41b6e6; border-bottom: 0.5px solid #444; font-weight: 600; }
@@ -126,6 +129,7 @@
   </div>
   <div id="dirs-section">
   <h2>Directories involved in duplicates</h2>
+  <div id="dir-summary"></div>
   <div id="dir-report"></div>
   </div>
   <div class="footer" style="margin-top:2rem;">brought to you by <a href="https://www.instagram.com/lightisbeauty/" target="_blank">@lightisbeauty</a> — from Miami with love</div>
@@ -350,6 +354,10 @@ function renderResults(dupeGroups) {
   resultsEl.innerHTML = segments.map(seg =>
     seg.type === 'range' ? renderRangeCard(seg.groups) : renderSingleGroup(seg.groups[0])
   ).join('');
+
+  // Dir summary — unique directory names at the top of the section
+  const allUniqueDirs = [...new Set(dupeGroups.flatMap(g => g.entries.map(f => f.path)))];
+  document.getElementById('dir-summary').textContent = allUniqueDirs.map(d => leafName(d)).join(', ');
 
   // Directory report — same collapsing logic as top section
   dirReportEl.innerHTML = `<table class="dir-table">
