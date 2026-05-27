@@ -76,10 +76,11 @@
   .td-frame { font-family: monospace; font-size: 13px; font-weight: 700; color: #db3eb1; white-space: nowrap; width: 1%; }
   .td-count { font-family: monospace; font-size: 14px; font-weight: 700; color: #db3eb1; white-space: nowrap; width: 1%; text-align: center; }
   .td-count-label { font-size: 10px; color: #888; font-weight: 400; display: block; text-align: center; }
-  .dir-row { display: grid; grid-template-columns: max-content 1fr auto; align-items: center; gap: 0 14px; font-family: monospace; margin-bottom: 4px; }
-  .dir-row:last-child { margin-bottom: 0; }
-  .dir-row .leaf { font-weight: 600; color: #41b6e6; font-size: 13px; white-space: nowrap; }
-  .dir-row .full { font-size: 12px; color: #888; word-break: break-all; }
+  .dir-inner { width: 100%; border-collapse: collapse; }
+  .dir-inner td { padding: 3px 0; vertical-align: middle; }
+  .dir-inner td + td { padding-left: 14px; }
+  .dir-inner .leaf { font-weight: 600; color: #41b6e6; font-size: 13px; white-space: nowrap; font-family: monospace; }
+  .dir-inner .full { font-size: 12px; color: #888; word-break: break-all; font-family: monospace; }
 
   .ok-wrap { text-align: center; padding: 4rem 0; }
   .ok-caption { font-size: 64px; color: #41b6e6; font-weight: 700; letter-spacing: -0.02em; }
@@ -389,12 +390,12 @@ function renderResults(dupeGroups) {
         const filesLabel = seg.type === 'range'
           ? `${first.entries.length}<span class="td-count-label">per frame</span>`
           : `${first.entries.length}<span class="td-count-label">files</span>`;
-        const dirRows = uniqueDirs.map(dir => `
-          <div class="dir-row">
-            <span class="leaf">${leafName(dir)}</span>
-            <div class="full">${dir}</div>
-            <button class="copy-btn" onclick="copyPath(this,'${safePath(dir)}')">copy path</button>
-          </div>`).join('');
+        const dirRows = `<table class="dir-inner">${uniqueDirs.map(dir => `
+          <tr>
+            <td><span class="leaf">${leafName(dir)}</span></td>
+            <td><span class="full">${dir}</span></td>
+            <td style="white-space:nowrap;"><button class="copy-btn" onclick="copyPath(this,'${safePath(dir)}')">copy path</button></td>
+          </tr>`).join('')}</table>`;
         return `<tr>
           <td class="td-frame">${frameLabel}</td>
           <td class="td-count">${filesLabel}</td>
