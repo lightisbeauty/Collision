@@ -58,9 +58,10 @@
   .range-dir-full { font-size: 12px; color: #888; font-family: monospace; word-break: break-all; }
 
   /* Dir summary panel */
-  #dir-summary { background: #2a2a2a; border: 0.5px solid #444; border-radius: 8px; padding: 0.5rem 1rem; margin-bottom: 10px; }
-  .dir-sum-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; padding: 6px 0; border-bottom: 0.5px solid #333; }
-  .dir-sum-row:last-child { border-bottom: none; }
+  #dir-summary { background: #2a2a2a; border: 0.5px solid #444; border-radius: 8px; padding: 0.5rem 1rem; margin-bottom: 10px; display: grid; grid-template-columns: max-content 1fr auto; align-items: center; column-gap: 14px; }
+  .dir-sum-row { display: contents; }
+  .dir-sum-row > * { padding: 6px 0; border-bottom: 0.5px solid #333; }
+  .dir-sum-row:last-child > * { border-bottom: none; }
   .dir-sum-name { font-family: monospace; font-size: 13px; color: #41b6e6; white-space: nowrap; }
   .dir-sum-path { font-family: monospace; font-size: 12px; color: #888; word-break: break-all; }
 
