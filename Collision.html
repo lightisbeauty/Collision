@@ -66,7 +66,8 @@
   #dir-summary tr:last-child td { border-bottom: none; }
   #dir-summary td + td { padding-left: 14px; }
   .dir-sum-name { font-family: monospace; font-size: 13px; color: #41b6e6; white-space: nowrap; }
-  .dir-sum-path { font-family: monospace; font-size: 12px; color: #888; word-break: break-all; width: 100%; }
+  .dir-sum-path { font-family: monospace; font-size: 12px; color: #888; word-break: break-all; }
+  #dir-summary td:nth-child(2), #dir-summary th:nth-child(2) { width: 100%; }
 
   /* Directory report table */
   .dir-table { width: 100%; border-collapse: collapse; background: #2a2a2a; border-radius: 8px; overflow: hidden; border: 0.5px solid #444; }
@@ -365,7 +366,7 @@ function renderResults(dupeGroups) {
   // Dir summary — unique directory names at the top of the section
   const allUniqueDirs = [...new Set(dupeGroups.flatMap(g => g.entries.map(f => f.path)))];
   document.getElementById('dir-summary').innerHTML = `<table>
-    <thead><tr><th>Directory</th><th>Full Path</th><th></th></tr></thead>
+    <thead><tr><th>Directory</th><th>Path</th><th></th></tr></thead>
     <tbody>${allUniqueDirs.map(d => `
       <tr>
         <td><span class="dir-sum-name">${leafName(d)}</span></td>
@@ -376,7 +377,7 @@ function renderResults(dupeGroups) {
 
   // Directory report — flat table, one row per directory, rowspan on frame/files cells
   dirReportEl.innerHTML = `<table class="dir-table">
-    <thead><tr><th>Frame #</th><th style="text-align:center;">Files</th><th>Directory</th><th>Full Path</th><th></th></tr></thead>
+    <thead><tr><th>Frame #</th><th style="text-align:center;">Files</th><th>Directory</th><th>Path</th><th></th></tr></thead>
     <tbody>
       ${segments.map(seg => {
         const first = seg.groups[0];
