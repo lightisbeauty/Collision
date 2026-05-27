@@ -79,6 +79,12 @@ Add these topics to the repo for maximum discoverability:
 
 ## Changelog
 
+### v1.1
+- Added **Highest Counter File** stat panel — surfaces the filename with the highest trailing frame counter across all scanned RAW files
+- Added **Directories involved** summary panel at the top of the directory report, listing all involved folder names with their paths and copy-path buttons
+- Improved directory report layout: flattened to one row per directory with locked column alignment for Directory, Path, and Copy Path
+- Renamed "Full Path" column label to "Path"
+
 ### v1.00
 - Initial release under the Collision name
 - Recursive RAW file scanning
