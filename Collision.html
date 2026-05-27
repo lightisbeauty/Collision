@@ -33,6 +33,7 @@
   .stat span { display: block; font-size: 11px; color: #41b6e6; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
   .stat strong { font-size: 22px; font-weight: 600; color: #fff; }
   .danger { color: #db3eb1; }
+  #s-highest { font-family: monospace; }
 
   /* Individual dupe group card */
   .group { background: #2a2a2a; border: 0.5px solid #444; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
@@ -124,6 +125,7 @@
     <div class="stat"><span>Dupe groups</span><strong id="s-dupe" class="danger">0</strong></div>
     <div class="stat"><span>Dirs involved</span><strong id="s-dirs" class="danger">0</strong></div>
     <div class="stat"><span>Total RAW Files</span><strong id="s-raw">0</strong></div>
+    <div class="stat" style="flex:1 1 100%;"><span>Highest Counter File</span><strong id="s-highest">—</strong></div>
   </div>
   <div class="top-bar">
     <div id="session-label"></div>
@@ -286,6 +288,13 @@ function runCheck() {
   document.getElementById('s-dirs').textContent = allDirs.size.toLocaleString();
   document.getElementById('s-raw').textContent = filtered.length.toLocaleString();
   document.getElementById('session-label').textContent = sessionRoot ? 'Session: ' + sessionRoot : '';
+
+  let maxCounter = -1, highestFile = '—';
+  for (const f of filtered) {
+    const n = frameNum(f.name);
+    if (n !== null) { const v = parseInt(n, 10); if (v > maxCounter) { maxCounter = v; highestFile = f.name; } }
+  }
+  document.getElementById('s-highest').textContent = highestFile;
 
   // Hide sections when no dupes
   const hasDupes = dupeGroups.length > 0;
